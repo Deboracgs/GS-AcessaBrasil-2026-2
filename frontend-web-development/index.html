@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="AcessaBrasil: mapa colaborativo de acessibilidade no Centro do Rio de Janeiro.">
+  <title>AcessaBrasil · Mapa de acessibilidade do Centro do Rio</title>
+  <link rel="icon" href="images/logo.svg" type="image/svg+xml">
+  <!-- Leaflet: biblioteca gratuita; tiles HOT hospedados pelo OpenStreetMap França -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <a class="pular" href="#conteudo">Pular para o conteúdo</a>
+
+  <!-- ================= CABEÇALHO E MENU ================= -->
+  <header class="topo">
+    <div class="container topo__linha">
+      <a href="#inicio" class="marca">
+        <img src="images/logo.svg" alt="" width="36" height="36">
+        <span>Acessa<strong>Brasil</strong></span>
+      </a>
+
+      <button class="menu-botao" id="menuBotao" aria-expanded="false" aria-controls="menu">
+        <span class="menu-botao__barra"></span>
+        <span class="visualmente-oculto">Abrir menu</span>
+      </button>
+
+      <nav id="menu" class="menu" aria-label="Menu principal">
+        <ul>
+          <li><a href="#inicio">Início</a></li>
+          <li><a href="#problema">O problema</a></li>
+          <li><a href="#mapa">Mapa</a></li>
+          <li><a href="#como-funciona">Como funciona</a></li>
+          <li><a href="#avaliar">Avaliar local</a></li>
+          <li><a href="#equipe">Equipe</a></li>
+        </ul>
+      </nav>
+
+      <div class="ferramentas" aria-label="Preferências de leitura">
+        <button class="ferramenta" id="diminuirFonte" title="Diminuir texto" aria-label="Diminuir tamanho do texto">A−</button>
+        <button class="ferramenta" id="aumentarFonte" title="Aumentar texto" aria-label="Aumentar tamanho do texto">A+</button>
+        <button class="ferramenta" id="botaoTema" title="Alternar modo claro e escuro" aria-pressed="false">
+          <span id="iconeTema" aria-hidden="true">☾</span>
+          <span class="visualmente-oculto">Alternar modo claro e escuro</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="conteudo">
+
+    <!-- ================= SEÇÃO 1: INÍCIO ================= -->
+    <section id="inicio" class="hero">
+      <div class="container hero__grade">
+        <div>
+          <p class="etiqueta">CitizenTech · Rio de Janeiro</p>
+          <h1>Saiba antes de sair se o caminho é acessível.</h1>
+          <p class="hero__texto">
+            O AcessaBrasil mostra no mapa quais lugares têm rampa, piso tátil, Libras, semáforo sonoro,
+            vagas para idosos e para pessoas com deficiência ou autismo, e quais são calmos o bastante para
+            quem tem sensibilidade a barulho. Também avisa se a calçada até eles está livre. Começamos pelo Centro do Rio.
+          </p>
+          <div class="hero__botoes">
+            <a href="#mapa" class="botao botao--primario">Abrir o mapa</a>
+            <a href="#avaliar" class="botao botao--secundario">Avaliar um local</a>
+          </div>
+          <ul class="legenda" aria-label="Legenda dos pins">
+            <li><span class="ponto ponto--verde"></span>Acessível</li>
+            <li><span class="ponto ponto--amarelo"></span>Acessibilidade parcial</li>
+            <li><span class="ponto ponto--vermelho"></span>Sem acessibilidade</li>
+          </ul>
+        </div>
+        <img src="images/hero.svg" alt="Ilustração de uma rua do Centro com pins verde, amarelo e vermelho e o símbolo de cadeira de rodas" class="hero__imagem" width="520" height="400">
+      </div>
+    </section>
+
+    <!-- ================= SEÇÃO 2: O PROBLEMA ================= -->
+    <section id="problema" class="secao">
+      <div class="container">
+        <p class="etiqueta">O problema</p>
+        <h2>A barreira só aparece quando já é tarde.</h2>
+        <p class="secao__intro">
+          Quem usa cadeira de rodas, tem baixa visão, é autista, é idoso ou anda com carrinho de bebê sai de casa
+          sem saber se o lugar tem entrada acessível, se a calçada está livre, se há vaga reservada ou se o ambiente
+          é barulhento demais. Muitas vezes a pessoa só descobre a barreira quando já está na frente dela.
+        </p>
+
+        <div class="numeros">
+          <article class="numero">
+            <strong>18,6 mi</strong>
+            <span>pessoas com deficiência no Brasil (8,9% da população com 2 anos ou mais)</span>
+          </article>
+          <article class="numero">
+            <strong>47,2%</strong>
+            <span>das pessoas com deficiência têm 60 anos ou mais</span>
+          </article>
+          <article class="numero">
+            <strong>1,20 m</strong>
+            <span>é a faixa livre mínima de calçada prevista na ABNT NBR 9050</span>
+          </article>
+        </div>
+        <p class="fonte">Fonte: IBGE, PNAD Contínua 2022, módulo Pessoas com Deficiência.</p>
+
+        <h3 class="personas__titulo">Para quem é</h3>
+        <div class="personas">
+          <article class="persona">
+            <div class="persona__avatar" aria-hidden="true">M</div>
+            <div>
+              <h4>Marcos, 34 anos</h4>
+              <p>Usa cadeira de rodas e trabalha no Centro. Precisa saber se a rampa da faixa está livre e se o prédio tem elevador.</p>
+            </div>
+          </article>
+          <article class="persona">
+            <div class="persona__avatar" aria-hidden="true">A</div>
+            <div>
+              <h4>Ana, mãe do Theo, 8 anos</h4>
+              <p>Theo é autista e se desorganiza com barulho alto. Ana procura lugares calmos, com horário silencioso e vaga TEA.</p>
+            </div>
+          </article>
+          <article class="persona">
+            <div class="persona__avatar" aria-hidden="true">L</div>
+            <div>
+              <h4>Dona Lúcia, 72 anos</h4>
+              <p>Tem baixa visão e vai de carro com o neto. Precisa de vaga para idoso perto e de semáforo sonoro para atravessar com segurança.</p>
+            </div>
+          </article>
+        </div>
+        <p class="fonte">Personas ilustrativas criadas pela equipe.</p>
+      </div>
+    </section>
+
+    <!-- ================= SEÇÃO 3: MAPA ================= -->
+    <section id="mapa" class="secao secao--destaque">
+      <div class="container">
+        <p class="etiqueta">Mapa de acessibilidade</p>
+        <h2>Encontre lugares acessíveis no Centro</h2>
+        <p class="secao__intro">Filtre pelo recurso que você precisa. Clique no pin para ver os detalhes e traçar a rota no Google Maps.</p>
+
+        <div class="filtros" role="group" aria-label="Filtrar por recurso">
+          <button class="filtro ativo" data-recurso="todos">Todos</button>
+          <button class="filtro" data-recurso="cadeira"><img src="images/icone-cadeira.svg" alt="" width="22" height="22">Cadeira de rodas</button>
+          <button class="filtro" data-recurso="visual"><img src="images/icone-visual.svg" alt="" width="22" height="22">Visual</button>
+          <button class="filtro" data-recurso="auditiva"><img src="images/icone-auditiva.svg" alt="" width="22" height="22">Libras</button>
+          <button class="filtro" data-recurso="banheiro"><img src="images/icone-banheiro.svg" alt="" width="22" height="22">Banheiro</button>
+          <button class="filtro" data-recurso="sonoro"><img src="images/icone-sonoro.svg" alt="" width="22" height="22">Semáforo sonoro</button>
+          <button class="filtro" data-recurso="autismo"><img src="images/icone-autismo.svg" alt="" width="22" height="22">Autismo (TEA)</button>
+          <button class="filtro" data-recurso="vaga_idoso"><img src="images/icone-vaga-idoso.svg" alt="" width="22" height="22">Vaga idoso</button>
+          <button class="filtro" data-recurso="vaga_pcd"><img src="images/icone-vaga-pcd.svg" alt="" width="22" height="22">Vaga PcD/TEA</button>
+        </div>
+        <label class="caixa caixa--filtro"><input type="checkbox" id="somenteCalmos"> Mostrar só lugares calmos (até 55 dB), bom para quem tem sensibilidade a barulho</label>
+
+        <div class="mapa-area">
+          <div id="mapaLeaflet" class="mapa" role="region" aria-label="Mapa com os locais avaliados"></div>
+
+          <aside class="lista">
+            <label for="busca" class="lista__rotulo">Buscar local</label>
+            <input type="search" id="busca" placeholder="Ex.: museu, metrô, praça">
+            <p id="contador" class="lista__contador" aria-live="polite"></p>
+            <ul id="listaLocais" class="lista__itens"></ul>
+          </aside>
+        </div>
+        <p class="fonte">Dados simulados para o protótipo: os nomes dos lugares são reais, mas as avaliações de acessibilidade ainda não foram verificadas em campo.</p>
+      </div>
+    </section>
+
+    <!-- ================= SEÇÃO 4: COMO FUNCIONA ================= -->
+    <section id="como-funciona" class="secao">
+      <div class="container">
+        <p class="etiqueta">Como funciona</p>
+        <h2>Do sensor na calçada ao aviso no seu celular</h2>
+
+        <div class="passos">
+          <article class="passo">
+            <img src="images/icone-sensor.svg" alt="" width="56" height="56">
+            <h3>1. O semáforo sonoro mede e avisa</h3>
+            <p>Um ESP32 instalado no semáforo de pedestres apita para guiar quem não enxerga e, com um sensor ultrassônico, mede a largura livre da rampa da faixa. Se algo bloqueia a passagem, o LCD e o buzzer avisam no local.</p>
+          </article>
+          <article class="passo">
+            <img src="images/icone-python.svg" alt="" width="56" height="56">
+            <h3>2. O Python decide</h3>
+            <p>Cada leitura é classificada em LIVRE, ATENÇÃO ou BLOQUEADO. O programa calcula a média do dia e o percentual de leituras em alerta.</p>
+          </article>
+          <article class="passo">
+            <img src="images/icone-mapa.svg" alt="" width="56" height="56">
+            <h3>3. A página mostra</h3>
+            <p>O pin no mapa ganha a cor do local e o aviso da calçada. A comunidade também avalia lugares e completa o mapa.</p>
+          </article>
+        </div>
+
+
+        <!-- Semáforo sonoro: demonstração com som (Web Audio API) -->
+        <div class="semaforo">
+          <div class="semaforo__poste" aria-hidden="true">
+            <span class="luz luz--vermelha acesa" id="luzVermelha"></span>
+            <span class="luz luz--verde" id="luzVerde"></span>
+          </div>
+          <div>
+            <h3>Semáforo sonoro de pedestres</h3>
+            <p>
+              Comum em cidades de países como Japão, Austrália e Espanha, o semáforo sonoro emite um tom lento
+              enquanto o sinal está fechado para o pedestre (para a pessoa cega encontrar o botão), bipes
+              rápidos quando abre e bipes cada vez mais rápidos quando vai fechar. Aperte o botão e ouça.
+            </p>
+            <div class="semaforo__controles">
+              <button type="button" id="botaoTravessia" class="botao botao--primario">Pedir travessia</button>
+              <label class="caixa"><input type="checkbox" id="somLigado" checked> Som ligado</label>
+            </div>
+            <p id="estadoSemaforo" class="semaforo__estado" aria-live="assertive">AGUARDE · sinal fechado para pedestres</p>
+          </div>
+        </div>
+
+        <!-- Simulador: a mesma regra do Python e do ESP32, em JavaScript -->
+        <div class="simulador">
+          <div>
+            <h3>Teste a regra da calçada</h3>
+            <p>Digite quantos centímetros de passagem livre a calçada tem e veja o aviso que o cidadão recebe.</p>
+            <form id="formSimulador" class="simulador__form" novalidate>
+              <label for="largura" class="visualmente-oculto">Largura livre em centímetros</label>
+              <input type="number" id="largura" min="1" max="400" placeholder="Largura em cm, ex.: 95" required>
+              <button type="submit" class="botao botao--primario">Verificar</button>
+            </form>
+          </div>
+          <div id="resultadoSimulador" class="simulador__resultado" aria-live="polite">
+            <span class="simulador__estado">Aguardando</span>
+            <p>O resultado aparece aqui.</p>
+          </div>
+        </div>
+
+        <table class="tabela">
+          <caption>Faixas usadas em todas as partes do AcessaBrasil</caption>
+          <thead><tr><th>Largura livre</th><th>Estado</th><th>Aviso</th></tr></thead>
+          <tbody>
+            <tr><td>120 cm ou mais</td><td><span class="selo selo--verde">LIVRE</span></td><td>Passagem acessível para cadeira de rodas.</td></tr>
+            <tr><td>90 a 119 cm</td><td><span class="selo selo--amarelo">ATENÇÃO</span></td><td>Passagem estreita, siga com cuidado.</td></tr>
+            <tr><td>menos de 90 cm</td><td><span class="selo selo--vermelho">BLOQUEADO</span></td><td>Use a rota alternativa.</td></tr>
+          </tbody>
+        </table>
+
+        <table class="tabela">
+          <caption>Nível de ruído, pensando em pessoas autistas e com sensibilidade sensorial</caption>
+          <thead><tr><th>Ruído medido</th><th>Classe</th><th>O que significa</th></tr></thead>
+          <tbody>
+            <tr><td>até 55 dB</td><td><span class="selo selo--verde">CALMO</span></td><td>Ambiente tranquilo, referência da OMS para áreas externas de dia.</td></tr>
+            <tr><td>56 a 70 dB</td><td><span class="selo selo--amarelo">MODERADO</span></td><td>Conversa normal com ruído de fundo.</td></tr>
+            <tr><td>acima de 70 dB</td><td><span class="selo selo--vermelho">BARULHENTO</span></td><td>Pode causar sobrecarga sensorial. Leve abafador ou escolha outro horário.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ================= SEÇÃO 5: AVALIAR LOCAL ================= -->
+    <section id="avaliar" class="secao secao--destaque">
+      <div class="container avaliar">
+        <div>
+          <p class="etiqueta">Participe</p>
+          <h2>Avalie um local e ajude quem vem depois</h2>
+          <p class="secao__intro">Esteve em algum lugar do Centro? Conte o que encontrou. A avaliação vira um novo pin no mapa.</p>
+          <ul class="impacto">
+            <li><strong id="totalLocais">0</strong> locais no mapa</li>
+            <li><strong id="totalAcessiveis">0%</strong> com acessibilidade completa</li>
+            <li><strong id="totalAlerta">0</strong> calçadas em alerta</li>
+            <li><strong id="totalCalmos">0</strong> lugares calmos para quem tem sensibilidade sensorial</li>
+          </ul>
+        </div>
+
+        <form id="formAvaliar" class="formulario" novalidate>
+          <label for="nomeLocal">Nome do local</label>
+          <input type="text" id="nomeLocal" placeholder="Ex.: Biblioteca Parque Estadual" required>
+
+          <fieldset>
+            <legend>Recursos que você encontrou</legend>
+            <label class="caixa"><input type="checkbox" name="recurso" value="cadeira"> Rampa ou elevador</label>
+            <label class="caixa"><input type="checkbox" name="recurso" value="visual"> Piso tátil ou braille</label>
+            <label class="caixa"><input type="checkbox" name="recurso" value="auditiva"> Atendimento em Libras</label>
+            <label class="caixa"><input type="checkbox" name="recurso" value="banheiro"> Banheiro acessível</label>
+            <label class="caixa"><input type="checkbox" name="recurso" value="sonoro"> Semáforo sonoro na travessia</label>
+            <label class="caixa"><input type="checkbox" name="recurso" value="autismo"> Ambiente amigável para autismo (sala ou horário silencioso)</label>
+            <label class="caixa"><input type="checkbox" name="recurso" value="vaga_idoso"> Vaga para idoso</label>
+            <label class="caixa"><input type="checkbox" name="recurso" value="vaga_pcd"> Vaga PcD e TEA</label>
+          </fieldset>
+
+          <label for="ruidoLocal">Como estava o barulho?</label>
+          <select id="ruidoLocal">
+            <option value="">Não sei</option>
+            <option value="calmo">Calmo, dava para conversar baixo</option>
+            <option value="moderado">Moderado</option>
+            <option value="barulhento">Barulhento, incomodava</option>
+          </select>
+
+          <label for="larguraLocal">Largura livre da calçada (cm, opcional)</label>
+          <input type="number" id="larguraLocal" min="1" max="400" placeholder="Ex.: 130">
+
+          <p class="dica">O pin aparece perto do ponto central do mapa. Nenhum dado pessoal é coletado.</p>
+          <button type="submit" class="botao botao--primario">Enviar avaliação</button>
+          <p id="mensagemForm" class="mensagem" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+    </section>
+
+    <!-- ================= SEÇÃO 6: EQUIPE ================= -->
+    <section id="equipe" class="secao">
+      <div class="container">
+        <p class="etiqueta">Equipe</p>
+        <h2>Quem constrói o AcessaBrasil</h2>
+        <div class="equipe">
+          <article class="membro">
+            <div class="membro__avatar" aria-hidden="true">DG</div>
+            <h3>Débora Gonçalves da Silva</h3>
+            <p>RM575926</p>
+          </article>
+          <article class="membro">
+            <div class="membro__avatar" aria-hidden="true">PC</div>
+            <h3>Pedro Paulo Carvalho Coutinho</h3>
+            <p>RM575957</p>
+          </article>
+          <article class="membro">
+            <div class="membro__avatar" aria-hidden="true">VN</div>
+            <h3>Vanessa Santos Martins de Lima Nascimento</h3>
+            <p>RM576450</p>
+          </article>
+        </div>
+        <ul class="ods" aria-label="ODS conectados">
+          <li>ODS 3 · Saúde e bem-estar</li>
+          <li>ODS 9 · Inovação e infraestrutura</li>
+          <li>ODS 10 · Redução das desigualdades</li>
+          <li>ODS 11 · Cidades sustentáveis</li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <!-- ================= RODAPÉ ================= -->
+  <footer class="rodape">
+    <div class="container rodape__grade">
+      <div>
+        <a href="#inicio" class="marca marca--rodape">
+          <img src="images/logo.svg" alt="" width="32" height="32">
+          <span>Acessa<strong>Brasil</strong></span>
+        </a>
+        <p>Mapa colaborativo de acessibilidade do Centro do Rio de Janeiro.</p>
+      </div>
+      <nav aria-label="Links do rodapé">
+        <ul>
+          <li><a href="#mapa">Mapa</a></li>
+          <li><a href="#como-funciona">Como funciona</a></li>
+          <li><a href="#avaliar">Avaliar local</a></li>
+          <li><a href="#equipe">Equipe</a></li>
+        </ul>
+      </nav>
+      <p class="rodape__legal">
+        Global Solution 2026.2 · CitizenTech · FIAP Rio de Janeiro · Engenharia de Software 1º ano<br>
+        Mapa: © colaboradores do OpenStreetMap. Dados de acessibilidade simulados.
+      </p>
+    </div>
+  </footer>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="js/script.js"></script>
+</body>
+</html>
