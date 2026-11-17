@@ -1,4 +1,4 @@
-/* =============================================================
+/*
    AcessaBrasil · Semáforo sonoro de pedestres com monitor de rampa
    Global Solution 2026.2 · Edge Computing & Computer Systems
    FIAP Rio de Janeiro · Engenharia de Software 1º ano
@@ -21,30 +21,29 @@
      >= 120 cm  LIVRE      faixa livre mínima da ABNT NBR 9050
      90 a 119   ATENCAO    cadeira de rodas (80 cm) passa com dificuldade
      < 90 cm    BLOQUEADO  cadeira de rodas não passa
-     0 ou > 400 INVALIDA   fora do alcance do HC-SR04, leitura descartada
-   ============================================================= */
+     0 ou > 400 INVALIDA   fora do alcance do HC-SR04, leitura descartada */
 
 #include <Wire.h>
 #include <LiquidCrystal_I2C.h>
 
-// ---------- Pinos ----------
-const int PINO_TRIG = 5;
-const int PINO_ECHO = 18;
+// pinagem
+const int PINO_TRIG = 18;
+const int PINO_ECHO = 5;
 const int PINO_LED_VERMELHO = 25;   // pedestre: pare
 const int PINO_LED_VERDE = 26;      // pedestre: atravesse
 const int PINO_LED_AMARELO = 27;    // rampa com problema
 const int PINO_BUZZER = 13;
 const int PINO_BOTAO = 4;           // botoeira do pedestre
-const int PINO_TESTE_FALHA = 19;    // chave deslizante: simula o sensor desconectado (só para teste no Wokwi)
+const int PINO_TESTE_FALHA = 19;    // chave deslizante: simula o sensor desconectado (só para teste no Wokwi); chave ligada = pino solto = HIGH
 
-// ---------- Limites da rampa (cm) ----------
+// Limites da rampa (cm) 
 const float LIMITE_LIVRE = 120.0;
 const float LIMITE_ATENCAO = 90.0;
 const float LEITURA_MAXIMA = 400.0;
 const int TAMANHO_MEDIA = 5;            // suavização: média das 5 últimas leituras válidas
 const int MAX_INVALIDAS_SEGUIDAS = 5;   // depois disso, indica falha do sensor
 
-// ---------- Tempos do semáforo (ms) ----------
+// Tempos do semáforo (ms)
 const unsigned long TEMPO_PEDIDO = 3000;      // espera depois de apertar o botão
 const unsigned long TEMPO_TRAVESSIA = 10000;  // verde fixo
 const unsigned long TEMPO_ENCERRANDO = 5000;  // verde piscando
@@ -60,7 +59,7 @@ const int FREQ_LOCALIZADOR = 440;
 const int FREQ_TRAVESSIA = 880;
 const int FREQ_ALERTA_RAMPA = 220;            // som grave e diferente para a rampa bloqueada
 
-// ---------- Estados ----------
+// Estados
 enum EstadoSemaforo { AGUARDANDO, PEDIDO, TRAVESSIA, ENCERRANDO };
 enum EstadoRampa { RAMPA_LIVRE, RAMPA_ATENCAO, RAMPA_BLOQUEADA, RAMPA_INVALIDA };
 
@@ -69,7 +68,7 @@ EstadoRampa estadoRampa = RAMPA_LIVRE;
 
 LiquidCrystal_I2C lcd(0x27, 16, 2);
 
-// ---------- Variáveis de controle ----------
+// Variáveis de controle
 unsigned long inicioEstado = 0;
 unsigned long ultimoBipe = 0;
 unsigned long ultimaLeitura = 0;
@@ -90,9 +89,7 @@ bool botaoAnterior = HIGH;
 const char* nomeSemaforo();
 const char* nomeRampa();
 
-// =============================================================
 // Sensor ultrassônico
-// =============================================================
 float medirDistanciaCm() {
   // Modo de teste: com a chave ligada, o sensor "não responde" (eco ausente = 0 cm)
   if (digitalRead(PINO_TESTE_FALHA) == HIGH) return 0;
@@ -146,9 +143,7 @@ void atualizarRampa() {
   }
 }
 
-// =============================================================
 // Semáforo
-// =============================================================
 void mudarEstado(EstadoSemaforo novo) {
   estadoSemaforo = novo;
   inicioEstado = millis();
@@ -259,7 +254,9 @@ void atualizarLcd() {
   } else if (estadoSemaforo == PEDIDO) {
     lcd.print("PEDIDO   Aguarde");
   } else if (estadoSemaforo == TRAVESSIA) {
-    int restante = (TEMPO_TRAVESSIA - (millis() - inicioEstado)) / 1000 + 1;
+    // conta com sinal (long) para não estourar se passar alguns ms dos 10 s
+    long restante = ((long)TEMPO_TRAVESSIA - (long)(millis() - inicioEstado)) / 1000 + 1;
+    if (restante < 0) restante = 0;
     lcd.print("ATRAVESSE   ");
     lcd.print(restante < 10 ? " " : "");
     lcd.print(restante);
@@ -291,7 +288,7 @@ void imprimirSerial() {
   Serial.println(nomeRampa());
 }
 
-// =============================================================
+// Inicialização e laço principal
 void setup() {
   Serial.begin(115200);
   pinMode(PINO_TRIG, OUTPUT);
@@ -301,7 +298,7 @@ void setup() {
   pinMode(PINO_LED_AMARELO, OUTPUT);
   pinMode(PINO_BUZZER, OUTPUT);
   pinMode(PINO_BOTAO, INPUT_PULLUP);
-  pinMode(PINO_TESTE_FALHA, INPUT);
+  pinMode(PINO_TESTE_FALHA, INPUT_PULLUP);  // pull-up interno: dispensa o fio de 3V3 na chave
 
   lcd.init();
   lcd.backlight();
