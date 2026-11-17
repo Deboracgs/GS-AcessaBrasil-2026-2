@@ -2,8 +2,6 @@
 
 A equipe usou IA generativa (Claude, da Anthropic) como copiloto para aprender e revisar o código, conforme os combinados da GS. Todas as linhas do `main.py` foram lidas e discutidas pela equipe, e cada integrante sabe explicar o programa.
 
-> Revisem e completem este arquivo com os prompts que vocês realmente usaram, na ordem em que usaram.
-
 ## Prompts utilizados
 
 **1. Definição das faixas**
