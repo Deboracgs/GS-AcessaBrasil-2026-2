@@ -1,0 +1,38 @@
+=== Diagnóstico: ruído medido em Irajá (Rio de Janeiro) ===
+Medições: 20 (10 pontos x 2 dias)
+Média: 67,8 dB · mínimo: 55 dB · máximo: 76 dB
+Acima de 55 dB (OMS): 95% · acima de 60 dB (NBR 10151): 85%
+
+=== Modelo 1 · Logarítmico: L(d) = L1 - 20·log10(d) ===
+Queda a cada vez que a distância dobra: 6,02 dB
+Derivada: L'(d) = -20/(d·ln10) < 0 -> função decrescente em todo o domínio
+Volume a 1 m necessário: L1 = ruído ambiente + 13,3 dB (máximo 100 dBA)
+Distância em que o bipe se iguala ao ruído ambiente: 4,60 m
+
+Simulação com o ruído real de cada ponto (média dos dois dias):
+Ponto | ruído ambiente | volume a 1 m | nível a 1,83 m | nível a 3,66 m
+  A   | 66,5 dB | 79,8 dB | 74,5 dB | 68,5 dB
+  B   | 71,5 dB | 84,8 dB | 79,5 dB | 73,5 dB
+  C   | 75,0 dB | 88,3 dB | 83,0 dB | 77,0 dB
+  D   | 69,5 dB | 82,8 dB | 77,5 dB | 71,5 dB
+  E   | 57,5 dB | 70,8 dB | 65,5 dB | 59,5 dB
+  F   | 67,5 dB | 80,8 dB | 75,5 dB | 69,5 dB
+  G   | 75,5 dB | 88,8 dB | 83,5 dB | 77,5 dB
+  H   | 68,5 dB | 81,8 dB | 76,5 dB | 70,5 dB
+  I   | 61,0 dB | 74,3 dB | 69,0 dB | 63,0 dB
+  J   | 66,0 dB | 79,3 dB | 74,0 dB | 68,0 dB
+Se o volume fosse fixo em 88,8 dB, no ponto mais calmo (57,5 dB) o bipe só se igualaria ao ambiente a 36,6 m (contra 4,60 m com ajuste)
+
+=== Modelo 2 · Polinomial: T(x) = x / v ===
+  padrão do Manual (1,2 m/s): coeficiente angular 1/v = 0,83 s/m · com 15 s atravessa até 18,0 m
+  idoso, 15º percentil (0,9 m/s): coeficiente angular 1/v = 1,11 s/m · com 15 s atravessa até 13,5 m
+  idoso, média em SP (0,75 m/s): coeficiente angular 1/v = 1,33 s/m · com 15 s atravessa até 11,2 m
+Tempo extra para o idoso médio: ΔT(x) = 0,50·x segundos
+Largura | 1,2 m/s | 0,9 m/s | 0,75 m/s | tempo extra (0,75 vs 1,2)
+   6 m  | 5,0 s | 6,7 s | 8,0 s | +3,0 s
+   8 m  | 6,7 s | 8,9 s | 10,7 s | +4,0 s
+  10 m  | 8,3 s | 11,1 s | 13,3 s | +5,0 s
+  12 m  | 10,0 s | 13,3 s | 16,0 s | +6,0 s
+  15 m  | 12,5 s | 16,7 s | 20,0 s | +7,5 s
+  20 m  | 16,7 s | 22,2 s | 26,7 s | +10,0 s
+
