@@ -4,51 +4,100 @@
   "editor": "wokwi",
   "parts": [
     { "type": "board-esp32-devkit-c-v4", "id": "esp", "top": 0, "left": 0, "attrs": {} },
-    { "type": "wokwi-led", "id": "ledVermelho", "top": 150, "left": -200, "attrs": { "color": "red", "label": "Pare" } },
-    { "type": "wokwi-led", "id": "ledVerde", "top": 150, "left": -150, "attrs": { "color": "green", "label": "Atravesse" } },
-    { "type": "wokwi-led", "id": "ledAmarelo", "top": 150, "left": -100, "attrs": { "color": "yellow", "label": "Rampa" } },
-    { "type": "wokwi-resistor", "id": "r1", "top": 240, "left": -205, "rotate": 90, "attrs": { "value": "220" } },
-    { "type": "wokwi-resistor", "id": "r2", "top": 240, "left": -155, "rotate": 90, "attrs": { "value": "220" } },
-    { "type": "wokwi-resistor", "id": "r3", "top": 240, "left": -105, "rotate": 90, "attrs": { "value": "220" } },
-    { "type": "wokwi-buzzer", "id": "buzzer", "top": 300, "left": -170, "attrs": { "volume": "0.3" } },
-    { "type": "wokwi-hc-sr04", "id": "ultrassom", "top": -140, "left": 160, "attrs": { "distance": "150" } },
-    { "type": "wokwi-pushbutton", "id": "botao", "top": 150, "left": 200, "attrs": { "color": "blue", "label": "Pedir travessia" } },
-    { "type": "wokwi-slide-switch", "id": "chaveFalha", "top": 90, "left": 210, "attrs": {} },
-    { "type": "wokwi-lcd1602", "id": "lcd", "top": 260, "left": 140, "attrs": { "pins": "i2c" } }
+    {
+      "type": "wokwi-led",
+      "id": "ledVermelho",
+      "top": -77,
+      "left": -170,
+      "attrs": { "color": "red", "label": "Pare" }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "ledVerde",
+      "top": -7,
+      "left": -170,
+      "attrs": { "color": "green", "label": "Atravesse" }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "ledAmarelo",
+      "top": 68,
+      "left": -170,
+      "attrs": { "color": "yellow", "label": "Rampa" }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "r1",
+      "top": -26,
+      "left": -130,
+      "attrs": { "value": "220" }
+    },
+    { "type": "wokwi-resistor", "id": "r2", "top": 44, "left": -130, "attrs": { "value": "220" } },
+    {
+      "type": "wokwi-resistor",
+      "id": "r3",
+      "top": 119,
+      "left": -130,
+      "attrs": { "value": "220" }
+    },
+    {
+      "type": "wokwi-buzzer",
+      "id": "buzzer",
+      "top": 185,
+      "left": -110,
+      "attrs": { "volume": "0.3" }
+    },
+    { "type": "wokwi-lcd1602", "id": "lcd", "top": -110, "left": 175, "attrs": { "pins": "i2c" } },
+    {
+      "type": "wokwi-slide-switch",
+      "id": "chaveFalha",
+      "top": 104.6,
+      "left": 262.5,
+      "rotate": 180,
+      "attrs": {}
+    },
+    {
+      "type": "wokwi-pushbutton",
+      "id": "botao",
+      "top": 131,
+      "left": 125,
+      "attrs": { "color": "blue", "label": "Pedir travessia" }
+    },
+    {
+      "type": "wokwi-hc-sr04",
+      "id": "ultrassom",
+      "top": 226,
+      "left": 152,
+      "rotate": 180,
+      "attrs": { "distance": "60" }
+    }
   ],
   "connections": [
     [ "esp:TX", "$serialMonitor:RX", "", [] ],
     [ "esp:RX", "$serialMonitor:TX", "", [] ],
-
-    [ "esp:25", "r1:1", "red", [] ],
-    [ "r1:2", "ledVermelho:A", "red", [] ],
-    [ "esp:26", "r2:1", "green", [] ],
-    [ "r2:2", "ledVerde:A", "green", [] ],
-    [ "esp:27", "r3:1", "gold", [] ],
-    [ "r3:2", "ledAmarelo:A", "gold", [] ],
-    [ "ledVermelho:C", "esp:GND.1", "black", [] ],
-    [ "ledVerde:C", "esp:GND.1", "black", [] ],
-    [ "ledAmarelo:C", "esp:GND.1", "black", [] ],
-
-    [ "buzzer:2", "esp:13", "orange", [] ],
-    [ "buzzer:1", "esp:GND.1", "black", [] ],
-
-    [ "ultrassom:VCC", "esp:5V", "red", [] ],
-    [ "ultrassom:GND", "esp:GND.2", "black", [] ],
-    [ "ultrassom:TRIG", "esp:5", "violet", [] ],
-    [ "ultrassom:ECHO", "esp:18", "blue", [] ],
-
-    [ "botao:1.l", "esp:4", "cyan", [] ],
-    [ "botao:2.l", "esp:GND.2", "black", [] ],
-
-    [ "chaveFalha:2", "esp:19", "magenta", [] ],
-    [ "chaveFalha:1", "esp:GND.2", "black", [] ],
-    [ "chaveFalha:3", "esp:3V3", "red", [] ],
-
-    [ "lcd:GND", "esp:GND.2", "black", [] ],
-    [ "lcd:VCC", "esp:5V", "red", [] ],
-    [ "lcd:SDA", "esp:21", "green", [] ],
-    [ "lcd:SCL", "esp:22", "purple", [] ]
+    [ "esp:25", "r1:2", "red", [ "h-25", "v-126" ] ],
+    [ "r1:1", "ledVermelho:A", "red", [] ],
+    [ "esp:26", "r2:2", "green", [ "h-35", "v-65" ] ],
+    [ "r2:1", "ledVerde:A", "green", [] ],
+    [ "esp:27", "r3:2", "gold", [] ],
+    [ "r3:1", "ledAmarelo:A", "gold", [] ],
+    [ "ledVermelho:C", "esp:GND.1", "black", [ "v-7", "h-35", "v196" ] ],
+    [ "ledVerde:C", "esp:GND.1", "black", [ "v-7", "h-35", "v126" ] ],
+    [ "ledAmarelo:C", "esp:GND.1", "black", [ "v-7", "h-35", "v51" ] ],
+    [ "buzzer:2", "esp:13", "orange", [ "v15", "h63", "v-121" ] ],
+    [ "buzzer:1", "esp:GND.1", "black", [ "v25", "h-107", "v-140" ] ],
+    [ "esp:GND.2", "lcd:GND", "black", [ "h20", "v-107" ] ],
+    [ "esp:3V3", "lcd:VCC", "red", [ "h-12", "v-150", "h162", "v53" ] ],
+    [ "esp:21", "lcd:SDA", "blue", [ "h40", "v-136" ] ],
+    [ "esp:22", "lcd:SCL", "purple", [ "h30", "v-97" ] ],
+    [ "esp:GND.3", "chaveFalha:1", "black", [] ],
+    [ "esp:19", "chaveFalha:2", "magenta", [] ],
+    [ "esp:4", "botao:1.l", "cyan", [] ],
+    [ "botao:2.l", "esp:GND.1", "black", [ "h-10", "v131", "h-305", "v-140" ] ],
+    [ "esp:18", "ultrassom:TRIG", "violet", [] ],
+    [ "esp:5", "ultrassom:ECHO", "limegreen", [] ],
+    [ "botao:2.l", "ultrassom:GND", "black", [ "h-10", "v52" ] ],
+    [ "esp:5V", "ultrassom:VCC", "red", [ "h-6", "v138", "h341", "v-135" ] ]
   ],
   "dependencies": {}
 }
